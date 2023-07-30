@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { fetchBooks, sortBooks } from "./Actions";
+import "../styles/App.css";
 
 const BookList = ({ books, fetchBooks, sortBooks }) => {
-    const [selectedSortOption, setSelectedSortOption] = useState("title");
+  const [selectedSortOption, setSelectedSortOption] = useState("title");
 
   useEffect(() => {
-    
     fetchBooks();
   }, [fetchBooks]);
 
@@ -20,7 +20,7 @@ const BookList = ({ books, fetchBooks, sortBooks }) => {
   return (
     <div>
       <div>
-        <label htmlFor="sortSelect">Sort By:</label>
+        <label htmlFor="sortSelect">Sort by:</label>
         <select id="sortSelect" onChange={handleSortChange} value={selectedSortOption}>
           <option value="title">Title</option>
           <option value="author">Author</option>
@@ -29,28 +29,32 @@ const BookList = ({ books, fetchBooks, sortBooks }) => {
       </div>
 
       <div>
-      {books &&
-  books.map((book, index) => (
-    <div key={index}>
-      <h2>Title: {book.volumeInfo.title}</h2>
-      <p>Author: {book.volumeInfo.authors?.join(", ")}</p>
-      <p>Publisher: {book.volumeInfo.publisher}</p>
-     
-    </div>
-  ))}
-
+        {books &&
+          books.map((book, index) => (
+            <table key={index}>
+              <tbody>
+                <tr>
+                  <th>Title: {book.volumeInfo.title}</th>
+                </tr>
+                <tr>
+                  <td>Author: {book.volumeInfo.authors?.join(", ")}</td>
+                </tr>
+                <tr>
+                  <td>Publisher: {book.volumeInfo.publisher}</td>
+                </tr>
+              </tbody>
+            </table>
+          ))}
       </div>
     </div>
   );
 };
 
-
 const mapStateToProps = (state) => {
   return {
-    books: state.books.books.items, 
+    books: state.books.books.items,
   };
 };
-
 
 const mapDispatchToProps = {
   fetchBooks,
@@ -58,4 +62,3 @@ const mapDispatchToProps = {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(BookList);
-
